@@ -6,8 +6,10 @@
     "cuid": "^2.1.6",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-redux": "^5.1.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
+    "redux": "^4.0.4",
     "semantic-ui-react": "^0.87.2"
   },
   "scripts": {
@@ -32,6 +34,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^4.3.4"
+    "@types/react-router-dom": "^4.3.4",
+    "redux-devtools-extension": "^2.13.8"
   }
 }
