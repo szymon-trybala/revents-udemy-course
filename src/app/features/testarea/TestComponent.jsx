@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { incrementCounter, decrementCounter } from './testActions'
 import { Button } from 'semantic-ui-react';
 
-// Inaczej actions
 const mapStoreStateToProps = (state) => ({
   data: state.test.data
 });
 
+// Inaczej actions
 const mapDispatchToProps = {
   incrementCounter,
   decrementCounter
