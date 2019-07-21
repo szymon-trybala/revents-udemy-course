@@ -36,7 +36,12 @@ const EventDetailedInfo = ({ event }) => {
             <span>{event.venue}</span>
           </Grid.Column>
           <Grid.Column width={4}>
-            <Button onClick={() => showMapToggle(!isMapOpen)} color='teal' size='tiny' content={isMapOpen ? 'Hide map' : 'Show map'} />
+            <Button
+              onClick={() => showMapToggle(!isMapOpen)}
+              color='teal'
+              size='tiny'
+              content={isMapOpen ? 'Hide map' : 'Show map'}
+            />
           </Grid.Column>
         </Grid>
       </Segment>
