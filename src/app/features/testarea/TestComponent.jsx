@@ -29,7 +29,6 @@ class TestComponent extends Component {
   };
 
   handleSelect = address => {
-    console.log('hello from handle select');
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then(latLng => {
