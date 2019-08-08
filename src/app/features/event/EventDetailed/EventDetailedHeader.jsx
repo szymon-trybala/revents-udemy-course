@@ -1,19 +1,19 @@
-import React, { Fragment } from 'react';
-import { Segment, Image, Item, Header, Button } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
-import { format } from 'date-fns';
+import React, { Fragment } from "react";
+import { Segment, Image, Item, Header, Button } from "semantic-ui-react";
+import { Link } from "react-router-dom";
+import { format } from "date-fns";
 
 const eventImageStyle = {
-  filter: 'brightness(30%)'
+  filter: "brightness(30%)"
 };
 
 const eventImageTextStyle = {
-  position: 'absolute',
-  bottom: '5%',
-  left: '5%',
-  width: '100%',
-  height: 'auto',
-  color: 'white'
+  position: "absolute",
+  bottom: "5%",
+  left: "5%",
+  width: "100%",
+  height: "auto",
+  color: "white"
 };
 
 const EventDetailedHeader = ({
@@ -21,11 +21,12 @@ const EventDetailedHeader = ({
   isHost,
   isGoing,
   goingToEvent,
-  cancelGoingToEvent
+  cancelGoingToEvent,
+  loading
 }) => {
   return (
     <Segment.Group>
-      <Segment basic attached='top' style={{ padding: '0' }}>
+      <Segment basic attached="top" style={{ padding: "0" }}>
         <Image
           src={`/assets/categoryImages/${event.category}.jpg`}
           style={eventImageStyle}
@@ -37,17 +38,20 @@ const EventDetailedHeader = ({
             <Item>
               <Item.Content>
                 <Header
-                  size='huge'
+                  size="huge"
                   content={event.title}
-                  style={{ color: 'white' }}
+                  style={{ color: "white" }}
                 />
                 <p>
-                  {event.date && format(event.date.toDate(), 'EEEE do LLLL')}
+                  {event.date && format(event.date.toDate(), "EEEE do LLLL")}
                 </p>
                 <p>
-                  Hosted by{' '}
+                  Hosted by{" "}
                   <strong>
-                    <Link to={`/profile/${event.hostUid}`} style={{color: 'white'}}>
+                    <Link
+                      to={`/profile/${event.hostUid}`}
+                      style={{ color: "white" }}
+                    >
                       {event.hostedBy}
                     </Link>
                   </strong>
@@ -58,7 +62,7 @@ const EventDetailedHeader = ({
         </Segment>
       </Segment>
 
-      <Segment attached='bottom' clearing>
+      <Segment attached="bottom" clearing>
         {!isHost && (
           <Fragment>
             {isGoing ? (
@@ -66,7 +70,11 @@ const EventDetailedHeader = ({
                 Cancel My Place
               </Button>
             ) : (
-              <Button color='teal' onClick={() => goingToEvent(event)}>
+              <Button
+                loading={loading}
+                color="teal"
+                onClick={() => goingToEvent(event)}
+              >
                 JOIN THIS EVENT
               </Button>
             )}
@@ -77,8 +85,8 @@ const EventDetailedHeader = ({
           <Button
             as={Link}
             to={`/manage/${event.id}`}
-            color='orange'
-            floated='right'
+            color="orange"
+            floated="right"
           >
             Manage Event
           </Button>

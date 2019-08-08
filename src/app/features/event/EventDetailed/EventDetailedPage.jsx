@@ -27,6 +27,7 @@ const mapState = (state, ownProps) => {
   return {
     event,
     auth: state.firebase.auth,
+    loading: state.async.loading,
     eventChat:
       !isEmpty(state.firebase.data.event_chat) &&
       objectToArray(state.firebase.data.event_chat[ownProps.match.params.id])
@@ -54,6 +55,7 @@ class EventDetailedPage extends Component {
     const {
       event,
       auth,
+      loading,
       goingToEvent,
       cancelGoingToEvent,
       addEventComment,
@@ -69,6 +71,7 @@ class EventDetailedPage extends Component {
         <Grid.Column width={10}>
           <EventDetailedHeader
             event={event}
+            loading={loading}
             isGoing={isGoing}
             isHost={isHost}
             goingToEvent={goingToEvent}

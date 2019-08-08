@@ -1,22 +1,22 @@
 /*global google*/
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { reduxForm, Field } from 'redux-form';
-import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { reduxForm, Field } from "redux-form";
+import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import {
   composeValidators,
   combineValidators,
   isRequired,
   hasLengthGreaterThan
-} from 'revalidate';
-import { Segment, Form, Button, Grid, Header } from 'semantic-ui-react';
-import { createEvent, updateEvent, cancelToggle } from '../eventActions';
-import TextInput from '../../../common/form/TextInput';
-import TextArea from '../../../common/form/TextArea';
-import SelectInput from '../../../common/form/SelectInput';
-import DateInput from '../../../common/form/DateInput';
-import PlaceInput from '../../../common/form/PlaceInput';
-import { withFirestore } from 'react-redux-firebase';
+} from "revalidate";
+import { Segment, Form, Button, Grid, Header } from "semantic-ui-react";
+import { createEvent, updateEvent, cancelToggle } from "../eventActions";
+import TextInput from "../../../common/form/TextInput";
+import TextArea from "../../../common/form/TextArea";
+import SelectInput from "../../../common/form/SelectInput";
+import DateInput from "../../../common/form/DateInput";
+import PlaceInput from "../../../common/form/PlaceInput";
+import { withFirestore } from "react-redux-firebase";
 
 const mapState = (state, ownProps) => {
   const eventId = ownProps.match.params.id;
@@ -34,7 +34,8 @@ const mapState = (state, ownProps) => {
 
   return {
     initialValues: event,
-    event
+    event,
+    loading: state.async.loading
   };
 };
 
@@ -45,26 +46,26 @@ const actions = {
 };
 
 const validate = combineValidators({
-  title: isRequired({ message: 'The event title is required' }),
-  category: isRequired({ message: 'The category is required' }),
+  title: isRequired({ message: "The event title is required" }),
+  category: isRequired({ message: "The category is required" }),
   description: composeValidators(
-    isRequired({ message: 'Please enter a description' }),
+    isRequired({ message: "Please enter a description" }),
     hasLengthGreaterThan(4)({
-      message: 'Description needs to be at least 5 characters'
+      message: "Description needs to be at least 5 characters"
     })
   )(),
-  city: isRequired('city'),
-  venue: isRequired('venue'),
-  date: isRequired('date')
+  city: isRequired("city"),
+  venue: isRequired("venue"),
+  date: isRequired("date")
 });
 
 const category = [
-  { key: 'drinks', text: 'Drinks', value: 'drinks' },
-  { key: 'culture', text: 'Culture', value: 'culture' },
-  { key: 'film', text: 'Film', value: 'film' },
-  { key: 'food', text: 'Food', value: 'food' },
-  { key: 'music', text: 'Music', value: 'music' },
-  { key: 'travel', text: 'Travel', value: 'travel' }
+  { key: "drinks", text: "Drinks", value: "drinks" },
+  { key: "culture", text: "Culture", value: "culture" },
+  { key: "film", text: "Film", value: "film" },
+  { key: "food", text: "Food", value: "food" },
+  { key: "music", text: "Music", value: "music" },
+  { key: "travel", text: "Travel", value: "travel" }
 ];
 
 class EventForm extends Component {
@@ -110,7 +111,7 @@ class EventForm extends Component {
         });
       })
       .then(() => {
-        this.props.change('city', selectedCity);
+        this.props.change("city", selectedCity);
       });
   };
 
@@ -123,7 +124,7 @@ class EventForm extends Component {
         });
       })
       .then(() => {
-        this.props.change('venue', selectedVenue);
+        this.props.change("venue", selectedVenue);
       });
   };
 
@@ -135,71 +136,73 @@ class EventForm extends Component {
       submitting,
       pristine,
       event,
-      cancelToggle
+      cancelToggle,
+      loading
     } = this.props;
 
     return (
       <Grid>
         <Grid.Column width={10}>
           <Segment>
-            <Header sub color='teal' content='Event details' />
+            <Header sub color="teal" content="Event details" />
             <Form
               onSubmit={this.props.handleSubmit(this.onFormSubmit)}
-              autoComplete='off'
+              autoComplete="off"
             >
               <Field
-                name='title'
-                type='text'
+                name="title"
+                type="text"
                 component={TextInput}
-                placeholder='Give your event a name'
+                placeholder="Give your event a name"
               />
               <Field
-                name='category'
-                type='text'
+                name="category"
+                type="text"
                 component={SelectInput}
                 options={category}
                 multiple={false}
-                placeholder='What is your event about?'
+                placeholder="What is your event about?"
               />
               <Field
-                name='description'
-                type='text'
+                name="description"
+                type="text"
                 component={TextArea}
                 rows={3}
-                placeholder='Tell us about your event'
+                placeholder="Tell us about your event"
               />
-              <Header sub color='teal' content='Event Location Details' />
+              <Header sub color="teal" content="Event Location Details" />
               <Field
-                name='city'
-                options={{ types: ['(cities)'] }}
+                name="city"
+                options={{ types: ["(cities)"] }}
                 onSelect={this.handleCitySelect}
                 component={PlaceInput}
-                placeholder='Event city'
+                placeholder="Event city"
               />
               <Field
-                name='venue'
+                name="venue"
                 component={PlaceInput}
                 options={{
                   location: new google.maps.LatLng(this.state.cityLatLng),
                   radius: 1000,
-                  types: ['establishment']
+                  types: ["establishment"]
                 }}
                 onSelect={this.handleVenueSelect}
-                placeholder='Event venue'
+                placeholder="Event venue"
               />
               <Field
-                name='date'
+                name="date"
                 component={DateInput}
-                dateFormat='dd LLL yyyy h:mm a'
+                dateFormat="dd LLL yyyy h:mm a"
                 showTimeSelect
-                timeFormat='HH:mm'
-                placeholder='Event date'
+                timeFormat="HH:mm"
+                placeholder="Event date"
               />
 
               <Button
                 disabled={invalid || submitting || pristine}
+                loading={loading}
                 positive
-                type='submit'
+                type="submit"
               >
                 Submit
               </Button>
@@ -207,17 +210,18 @@ class EventForm extends Component {
                 onClick={
                   initialValues.id
                     ? () => history.push(`/events/${initialValues.id}`)
-                    : () => history.push('/events')
+                    : () => history.push("/events")
                 }
-                type='button'
+                type="button"
+                disabled={loading}
               >
                 Cancel
               </Button>
               <Button
-                type='button'
-                color={event.cancelled ? 'green' : 'red'}
-                floated='right'
-                content={event.cancelled ? 'Reactivate event' : 'Cancel event'}
+                type="button"
+                color={event.cancelled ? "green" : "red"}
+                floated="right"
+                content={event.cancelled ? "Reactivate event" : "Cancel event"}
                 onClick={() => cancelToggle(!event.cancelled, event.id)}
               />
             </Form>
@@ -233,7 +237,7 @@ export default withFirestore(
     mapState,
     actions
   )(
-    reduxForm({ form: 'eventForm', validate, enableReinitialize: true })(
+    reduxForm({ form: "eventForm", validate, enableReinitialize: true })(
       EventForm
     )
   )
