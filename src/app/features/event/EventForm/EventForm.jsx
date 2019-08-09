@@ -92,10 +92,10 @@ class EventForm extends Component {
           values.venueLatLng = this.props.event.venueLatLng;
         }
         this.props.updateEvent(values);
-        this.props.history.push(`/events/${this.props.initialValues.id}`);
+        this.props.history.push(`/event/${this.props.initialValues.id}`);
       } else {
         let createdEvent = await this.props.createEvent(values);
-        this.props.history.push(`/events/${createdEvent.id}`);
+        this.props.history.push(`/event/${createdEvent.id}`);
       }
     } catch (error) {
       console.log(error);
@@ -209,7 +209,7 @@ class EventForm extends Component {
               <Button
                 onClick={
                   initialValues.id
-                    ? () => history.push(`/events/${initialValues.id}`)
+                    ? () => history.push(`/event/${initialValues.id}`)
                     : () => history.push("/events")
                 }
                 type="button"
