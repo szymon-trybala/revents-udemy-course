@@ -69,7 +69,6 @@ export const socialLogin = selectedProvider => async (
         createdAd: firestore.FieldValue.serverTimestamp()
       });
     }
-    console.log(user);
   } catch (error) {
     console.log(error);
   }

@@ -11,6 +11,8 @@ import { objectToArray, createDataTree } from "../../../common/util/helpers";
 import { goingToEvent, cancelGoingToEvent } from "../../user/userActions";
 import { addEventComment } from "../eventActions";
 import { openModal } from "../../modals/modalActions";
+import LoadingComponents from "../../../layout/LoadingComponents";
+import NotFound from "../../../layout/NotFound";
 
 const mapState = (state, ownProps) => {
   const eventId = ownProps.match.params.id;
@@ -28,6 +30,7 @@ const mapState = (state, ownProps) => {
   return {
     event,
     auth: state.firebase.auth,
+    requesting: state.firestore.status.requesting,
     loading: state.async.loading,
     eventChat:
       !isEmpty(state.firebase.data.event_chat) &&
@@ -62,14 +65,23 @@ class EventDetailedPage extends Component {
       cancelGoingToEvent,
       addEventComment,
       eventChat,
-      openModal
+      openModal,
+      requesting,
+      match
     } = this.props;
     const attendees =
-      event && event.attendees && objectToArray(event.attendees);
+      event && event.attendees && objectToArray(event.attendees).sort((a, b) => {
+        return a.joinDate.toDate() - b.joinDate.toDate();
+      });
     const isHost = event.hostUid === auth.uid;
     const isGoing = attendees && attendees.some(a => a.id === auth.uid);
     const chatTree = !isEmpty(eventChat) && createDataTree(eventChat);
     const autheniticated = auth.isLoaded && !auth.isEmpty;
+    const loadingEvent = requesting[`events/${match.params.id}`];
+
+    if (loadingEvent) return <LoadingComponents/>
+    if (Object.keys(event).length === 0) return <NotFound />
+
     return (
       <Grid>
         <Grid.Column width={10}>
@@ -84,12 +96,13 @@ class EventDetailedPage extends Component {
             openModal={openModal}
           />
           <EventDetailedInfo event={event} />
-          { autheniticated && 
-          <EventDetailedChat
-            addEventComment={addEventComment}
-            eventId={event.id}
-            eventChat={chatTree}
-          />}
+          {autheniticated && (
+            <EventDetailedChat
+              addEventComment={addEventComment}
+              eventId={event.id}
+              eventChat={chatTree}
+            />
+          )}
         </Grid.Column>
         <Grid.Column width={6}>
           <EventDetailedSidebar attendees={attendees} />
