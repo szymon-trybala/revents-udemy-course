@@ -76,7 +76,7 @@ class EventDetailedPage extends Component {
     const isHost = event.hostUid === auth.uid;
     const isGoing = attendees && attendees.some(a => a.id === auth.uid);
     const chatTree = !isEmpty(eventChat) && createDataTree(eventChat);
-    const autheniticated = auth.isLoaded && !auth.isEmpty;
+    const authenticated = auth.isLoaded && !auth.isEmpty;
     const loadingEvent = requesting[`events/${match.params.id}`];
 
     if (loadingEvent) return <LoadingComponents/>
@@ -92,11 +92,11 @@ class EventDetailedPage extends Component {
             isHost={isHost}
             goingToEvent={goingToEvent}
             cancelGoingToEvent={cancelGoingToEvent}
-            autheniticated={autheniticated}
+            authenticated={authenticated}
             openModal={openModal}
           />
           <EventDetailedInfo event={event} />
-          {autheniticated && (
+          {authenticated && (
             <EventDetailedChat
               addEventComment={addEventComment}
               eventId={event.id}
