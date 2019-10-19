@@ -1,6 +1,7 @@
 import React from 'react';
 import { Segment, Icon } from 'semantic-ui-react';
 import GoogleMapReact from 'google-map-react';
+import secret from '../secret';
 
 const EventDetailedMap = ({ lat, lng }) => {
   const zoom = 14;
@@ -10,7 +11,7 @@ const EventDetailedMap = ({ lat, lng }) => {
     <Segment attached='bottom' style={{padding: 0}}>
       <div style={{ height: '300px', width: '100%' }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: 'AIzaSyBtTddkgNXC5qQ5JW6oPmRb9MphgrZiHpA' }}
+          bootstrapURLKeys={{ secret.apiKey }}
           defaultCenter={{lat, lng}}
           defaultZoom={zoom}
         >

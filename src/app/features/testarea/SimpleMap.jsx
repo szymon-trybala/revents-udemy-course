@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import { Icon } from 'semantic-ui-react';
+import secret from '../secret';
 
 const AnyReactComponent = () => <Icon name='marker' size='big' color='red'/>;
 
@@ -16,7 +17,7 @@ class SimpleMap extends Component {
       // Important! Always set the container height explicitly
       <div style={{ height: '50vh', width: '50%' }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: 'AIzaSyBtTddkgNXC5qQ5JW6oPmRb9MphgrZiHpA'  }}
+          bootstrapURLKeys={{ secret.apiKey  }}
           defaultCenter={latlng}
           defaultZoom={this.props.zoom}
         >

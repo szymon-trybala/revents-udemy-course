@@ -24,3 +24,6 @@ yarn-error.log*
 
 # secret
 secret.js
+
+/.firebase
+/.vscode
